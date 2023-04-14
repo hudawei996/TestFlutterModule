@@ -1,0 +1,43 @@
+
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    //报错:Caused by: org.gradle.api.internal.plugins.PluginApplicationException: Failed to apply plugin class 'FlutterPlugin'.
+//    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS) // edit this
+
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url '/Users/goals/DolphineMedia/flutter_module/build/host/outputs/repo'
+            // This is relative to the location of the build.gradle file
+            // if using a relative path.
+        }
+        maven {
+            url 'https://storage.googleapis.com/download.flutter.io'
+        }
+    }
+}
+rootProject.name = "TestFlutterModule"
+
+// Include the host app project.
+include ':app'                                    // assumed existing content
+setBinding(new Binding([gradle: this]))                                // new
+//TODO 我日你奶奶!!!!!浪费老子时间,就不能这样分行写参数....!!!!!
+//evaluate(new File(                                                     // new
+////        settingsDir.parentFile,                                              // new
+////        settingsDir.path,                                              // new
+////        'TestFlutterModule/flutter_moudle/.android/include_flutter.groovy'                         // new
+//        'flutter_moudle/.android/include_flutter.groovy'                         // new
+//))
+
+evaluate(new File(settingsDir.path,
+        'flutter_module/.android/include_flutter.groovy'))
+include ':flutter_module'
+project(':flutter_module').projectDir = new File('../flutter_module')
